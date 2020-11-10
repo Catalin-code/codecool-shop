@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(name = "Cart", urlPatterns = "/cart")
-public class Cart extends HttpServlet {
+public class Cart extends ProductController {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
     }
@@ -30,6 +30,8 @@ public class Cart extends HttpServlet {
         context.setVariable("category", productCategoryDataStore.find(1));
         context.setVariable("products", productDataStore.getBy(productCategoryDataStore.find(1)));
 
+        System.out.println(req.getAttribute("test"));
+        System.out.println(cart);
         engine.process("product/cart.jsp", context, resp.getWriter());
     }
 }

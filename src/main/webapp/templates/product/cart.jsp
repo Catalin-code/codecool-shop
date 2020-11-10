@@ -36,7 +36,7 @@
 <div class="jumbotron text-center">
     <h1>Codecool Shop</h1>
 </div>
-
+${cart}
 <div th:replace="footer.html :: copy"></div>
 
 </body>
