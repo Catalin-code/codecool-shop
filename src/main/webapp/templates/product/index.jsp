@@ -39,8 +39,8 @@
 
 <div class="container" align="right">
     <a href="/cart">
-        <button type="button" class="btn btn-default btn-sm" style="font-size: 20px">
-            <span class="glyphicon glyphicon-shopping-cart"></span> Shopping Cart
+        <button type="button" class="btn btn-default btn-sm" style="font-size: 20px" id="cart-icon">
+            <span class="glyphicon glyphicon-shopping-cart"></span>
         </button>
     </a>
 </div>
@@ -71,7 +71,7 @@
     </div>
 
 </div>
-<script src="static/js/addToCart.js"></script>
+<script src="static/js/addToCart.js" type="module"></script>
 <div th:replace="footer.html :: copy"></div>
 
 </body>

@@ -1,6 +1,13 @@
-let addToCartBtn = document.querySelector(".btn btn-success");
-addToCartBtn.addEventListener("click", addToCart);
+let addToCartBtnCollection = document.getElementsByClassName("btn btn-success");
+let cartIcon = document.querySelector("#cart-icon")
+let cartCount = 0;
+let cartIconInnerHtml = cartIcon.innerHTML;
+
+for (let i = 0; i < addToCartBtnCollection.length; i++) {
+    addToCartBtnCollection[i].addEventListener("click", addToCart);
+}
 
 function addToCart() {
-    console.log("am ajuns aici");
+    cartCount++;
+    cartIcon.innerHTML = cartIconInnerHtml + cartCount;
 }
