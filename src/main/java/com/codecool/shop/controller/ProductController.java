@@ -5,6 +5,7 @@ import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.config.TemplateEngineUtil;
+import com.codecool.shop.model.Item;
 import com.codecool.shop.model.Product;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -21,7 +22,7 @@ import java.util.Map;
 
 @WebServlet(urlPatterns = {"/"})
 public class ProductController extends HttpServlet {
-    public Map<String, Float> cart = new HashMap<String, Float>();
+    public Map<String, Item> cart = new HashMap<String, Item>();
 
 
     @Override
@@ -43,13 +44,19 @@ public class ProductController extends HttpServlet {
 
         for (int i = 0; i <= productDataStore.getAll().size(); i++) {
             if (req.getParameter("id") != null){
+                System.out.println(cart.get("id").getPrice());
+                System.out.println(cart.get("id").getQuantity());
                 if (cart.containsKey(req.getParameter("id"))){
-                    cart.get(req.getParameter("id"));
+                    int newQuantity = cart.get(req.getParameter("id")).getQuantity() + 1;
+//                    cart.replace(req.getParameter("id"),
+//                            cart.get(req.getParameter("id")),
+//                                    cart.get(req.getParameter("id")) + Float.parseFloat(req.getParameter("price").split(" ")[0]));
                     cart.replace(req.getParameter("id"),
                             cart.get(req.getParameter("id")),
-                                    cart.get(req.getParameter("id")) + Float.parseFloat(req.getParameter("price").split(" ")[0]));
+                                new Item(Float.parseFloat(req.getParameter("price").split(" ")[0]) * newQuantity, newQuantity));
                 } else {
-                    cart.put(req.getParameter("id"), Float.parseFloat(req.getParameter("price").split(" ")[0]));
+                    cart.put(req.getParameter("id"), new Item(Float.parseFloat(req.getParameter("price").split(" ")[0]), 1));
+//                    cart.put(req.getParameter("id"), Float.parseFloat(req.getParameter("price").split(" ")[0]));
                 }
             }
         }
