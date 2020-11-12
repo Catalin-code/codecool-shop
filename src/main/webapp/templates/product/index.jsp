@@ -25,13 +25,15 @@
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- End of Bootstrap components -->
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
     <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
 </head>
 
 <body>
 
 <div class="jumbotron text-center">
-    <h1>Codecool Shop</h1>
+    <a href="/" style="text-decoration: none"><h1>Codecool Shop</h1></a>
 </div>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">Filter by :</a>
@@ -60,6 +62,13 @@
                 </div>
             </li>
         </ul>
+        <div class="container" align="right">
+        <a href="/cart">
+            <button type="button" class="btn btn-default btn-sm" style="font-size: 20px" id="cart-icon">
+                <span class="glyphicon glyphicon-shopping-cart" th:text="'( ' + ${itemsCount} + ' )' "> </span>
+            </button>
+        </a>
+        </div>
         <form class="form-inline my-2 my-lg-0" method="get" action="/search">
             <input class="form-control mr-sm-2" name="search" type="text" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
@@ -81,7 +90,11 @@
                         <p class="lead" th:text="${prod.getPrice()}">100 USD</p>
                     </div>
                     <div class="card-text">
-                        <a class="btn btn-success" href="#">Add to cart</a>
+                        <form action="/" method="post">
+                            <input type="hidden" name="prodName" th:attr="value=${prod.name}"/>
+                            <input type="hidden" name="prodPrice" th:attr="value=${prod.getPrice()}"/>
+                            <button name="productToCart" type="submit" class="btn btn-success"> Add to cart</button>
+                        </form>
                     </div>
                 </div>
             </div>
