@@ -62,7 +62,7 @@
                             </thead>
                             <tbody>
 
-                            <div th:each="prod,iterStat : ${cart2}">
+                            <div th:each="prod,iterStat : ${cart}">
                                 <tr>
                                     <th scope="row" class="border-0">
                                         <div class="p-2">
@@ -72,9 +72,21 @@
                                         </div>
                                     </th>
                                     <td class="border-0 align-middle" th:text="${prod.value} + ' $'"><strong></strong></td>
-                                    <td class="border-0 align-middle"><strong>3</strong></td>
-                                    <td class="border-0 align-middle"><a href=""><strong>&uarr;</strong></a></td>
-                                    <td class="border-0 align-middle"><a href=""><strong>&darr;</strong></a></td>
+                                    <td class="border-0 align-middle"><strong th:text="${cart2.get(prod.key)}"></strong></td>
+                                    <td class="border-0 align-middle">
+                                        <form action="/cart" method="post">
+                                            <input type="hidden" name="prodName" th:attr="value=${prod.key}"/>
+                                            <input type="hidden" name="quantity" th:attr="value=${cart2.get(prod.key)}">
+                                            <input type="hidden" name="prodPrice" th:attr="value=${prod.value}"/>
+                                            <button name="Add" type="submit" class="btn btn-success"> Add</button>
+                                        </form>
+                                    <td class="border-0 align-middle"><a href="">
+                                        <form action="/cart" method="post">
+                                            <input type="hidden" name="prodName" th:attr="value=${prod.key}"/>
+                                            <input type="hidden" name="quantity" th:attr="value=${cart2.get(prod.key)}">
+                                            <input type="hidden" name="prodPrice" th:attr="value=${prod.value}"/>
+                                            <button name="Remove" type="submit"  class="btn btn-danger"> Remove</button>
+                                        </form>
                                     <td class="border-0 align-middle"><a href="#" class="text-dark"><i class="fa fa-trash"></i></a></td>
                                 </tr>
                             </div>

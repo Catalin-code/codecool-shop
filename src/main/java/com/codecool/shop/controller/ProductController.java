@@ -22,8 +22,30 @@ import java.util.Map;
 
 @WebServlet(urlPatterns = {"/"})
 public class ProductController extends HttpServlet {
-    public Map<String, Item> cart = new HashMap<String, Item>();
+    public Map<String, Double> cart = new HashMap<String, Double>();
+    public Map<String, Integer> cart2 = new HashMap<String, Integer>();
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+            if (req.getParameter("prodName") != null){
+                if (cart.containsKey(req.getParameter("prodName"))){
+                    cart.replace(req.getParameter("prodName"),
+                            cart.get(req.getParameter("prodName")),
+                            cart.get(req.getParameter("prodName")) + Double.parseDouble(req.getParameter("prodPrice").split(" ")[0]));
+
+                    int count = cart2.getOrDefault(req.getParameter("prodName"), 0);
+                    cart2.put(req.getParameter("prodName"), count + 1);
+
+                } else {
+                    cart.put(req.getParameter("prodName"), Double.parseDouble(req.getParameter("prodPrice").split(" ")[0]));
+                    cart2.put(req.getParameter("prodName"), 1);
+                }
+            }
+        req.getSession().setAttribute("cart", cart);
+        req.getSession().setAttribute("cart2", cart2);
+        resp.sendRedirect("/");
+
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -35,32 +57,7 @@ public class ProductController extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
         context.setVariable("category", productCategoryDataStore.find(1));
         context.setVariable("products", productDataStore.getBy(productCategoryDataStore.find(1)));
-        // // Alternative setting of the template context
-        // Map<String, Object> params = new HashMap<>();
-        // params.put("category", productCategoryDataStore.find(1));
-        // params.put("products", productDataStore.getBy(productCategoryDataStore.find(1)));
-        // context.setVariables(params);
 
-
-        for (int i = 0; i <= productDataStore.getAll().size(); i++) {
-            if (req.getParameter("id") != null){
-                System.out.println(cart.get("id").getPrice());
-                System.out.println(cart.get("id").getQuantity());
-                if (cart.containsKey(req.getParameter("id"))){
-                    int newQuantity = cart.get(req.getParameter("id")).getQuantity() + 1;
-//                    cart.replace(req.getParameter("id"),
-//                            cart.get(req.getParameter("id")),
-//                                    cart.get(req.getParameter("id")) + Float.parseFloat(req.getParameter("price").split(" ")[0]));
-                    cart.replace(req.getParameter("id"),
-                            cart.get(req.getParameter("id")),
-                                new Item(Float.parseFloat(req.getParameter("price").split(" ")[0]) * newQuantity, newQuantity));
-                } else {
-                    cart.put(req.getParameter("id"), new Item(Float.parseFloat(req.getParameter("price").split(" ")[0]), 1));
-//                    cart.put(req.getParameter("id"), Float.parseFloat(req.getParameter("price").split(" ")[0]));
-                }
-            }
-        }
-        req.getSession().setAttribute("cart", cart);
 
 
         engine.process("product/index.jsp", context, resp.getWriter());
